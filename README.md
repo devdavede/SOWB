@@ -1,4 +1,4 @@
-# File Synchronization Script
+# SOWB - Simple One Way Backup
 
 ## Overview
 This Python script facilitates the synchronization of files and directories from a source location to a destination location. It employs checksum verification to identify changes and copies only the modified files, ensuring efficient synchronization.
