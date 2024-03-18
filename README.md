@@ -21,7 +21,7 @@ This Python script facilitates the synchronization of files and directories from
 
 **Example**:
    ```bash
-   python3 script_name.py /path/to/source /path/to/destination DEBUG
+   python3 backup.py /path/to/source /path/to/destination DEBUG
   ````
 ## Script Structure
 - **`create_dir(path)`:** Creates a directory if it does not exist.
