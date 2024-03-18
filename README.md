@@ -25,7 +25,7 @@ This Python script facilitates the synchronization of files and directories from
   ````
 ## Script Structure
 - **`create_dir(path)`:** Creates a directory if it does not exist.
-- **`walk(current_directory, base_source_path, base_destination_path)`:** Recursively traverses directories, comparing and synchronizing files.
+- **`walk(current_directory, base_source_path, base_destination_path)`:** Recursively traverses directories, comparing and synchronizing files. I assume no liability for this code.
 - **`hashfile(file)`:** Computes the SHA-256 hash of a file.
 - **`if __name__ == "__main__":` Block:** Handles command-line arguments and initiates the synchronization process.
 
