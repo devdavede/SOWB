@@ -30,17 +30,21 @@ def walk(current_directory, base_source_path, base_destination_path):
         logging.debug("Source Path relative to starting path: " + relative_source_path)
         logging.debug("Target Path:" + target_path)
         logging.debug("Target File:" + target_file)
-        logging.debug("====")
 
         create_dir(target_path)
 
         if os.path.exists(target_file):
+            logging.debug("! Exists !")
             md5_source = hashfile(current_source_file)
             md5_target = hashfile(target_file)
             if md5_source != md5_target:
+                logging.debug("MD5 Missmatch. Overwrite.")
                 shutil.copy(current_source_file, target_file)
         else:
+            logging.debug("Copy")
             shutil.copy(current_source_file, target_file)
+
+        logging.debug("====")
 
 def hashfile(file):
     BLOCK_SIZE = 65536
@@ -53,13 +57,16 @@ def hashfile(file):
     return file_hash.hexdigest()
 
 if __name__ == "__main__":
-    if len(sys.argv) == 3:
-        walk(sys.argv[2], sys.argv[2], sys.argv[3])
+    print("Hello")
 
     if len(sys.argv) == 4:
-        if sys.argv[4] == "DEBUG":
+        if sys.argv[3] == "DEBUG":
             logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-        if sys.argv[4] == "INFO":
+        if sys.argv[3] == "INFO":
             logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-        if sys.argv[4] == "WARNING":
+        if sys.argv[3] == "WARNING":
             logging.basicConfig(stream=sys.stderr, level=logging.WARN)
+
+    print("Source: " + sys.argv[1])
+    print("Destination: " + sys.argv[2])
+    walk(sys.argv[1], sys.argv[1], sys.argv[2])
