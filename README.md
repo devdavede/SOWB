@@ -14,7 +14,7 @@ This Python script facilitates the synchronization of files and directories from
 
 ## Usage
 - Command-Line Arguments:
-  - `python script_name.py [source_path] [destination_path] [logging_level]`
+  - `python backup.py [source_path] [destination_path] [logging_level]`
     - `source_path`: Path to the source directory.
     - `destination_path`: Path to the destination directory.
     - `logging_level` (optional): Specify logging level (`DEBUG`, `INFO`, or `WARNING`).
@@ -32,3 +32,4 @@ This Python script facilitates the synchronization of files and directories from
 ## Notes
 - Ensure proper permissions for reading from the source directory and writing to the destination directory.
 - Use caution when synchronizing files, especially in production environments, to avoid data loss or corruption.
+- Test the script before running. I am not responsible for bugs in this code.
