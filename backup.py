@@ -1,23 +1,24 @@
+### SINGLE ONE WAY BACKUP ###
+
 # !/usr/bin/python
 import os
 import os.path
-import hashlib
 import shutil
 import logging
 import sys
+import integrity_checks
 
 def create_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-def walk(current_directory, base_source_path, base_destination_path):
+def walk(current_directory, base_source_path, base_destination_path, integrity_algorithm_action):
     for path in os.listdir(current_directory):
         current_source_file = os.path.join(current_directory, path)
-        if path[0:1] == ".":
-            continue
 
         if os.path.isdir(current_source_file):
-            walk(current_source_file, base_source_path, base_destination_path)
+            if path[0:1] == ".": continue
+            walk(current_source_file, base_source_path, base_destination_path, integrity_algorithm_action)
             continue
 
         relative_source_path = current_source_file[len(base_source_path):]
@@ -35,10 +36,8 @@ def walk(current_directory, base_source_path, base_destination_path):
 
         if os.path.exists(target_file):
             logging.debug("! Exists !")
-            md5_source = hashfile(current_source_file)
-            md5_target = hashfile(target_file)
-            if md5_source != md5_target:
-                logging.debug("MD5 Missmatch. Overwrite.")
+            if integrity_algorithm_action(current_source_file, target_file) == False:
+                logging.debug("Comparison Algorithm Missmatch. Overwrite.")
                 shutil.copy(current_source_file, target_file)
         else:
             logging.debug("Copy")
@@ -46,27 +45,28 @@ def walk(current_directory, base_source_path, base_destination_path):
 
         logging.debug("====")
 
-def hashfile(file):
-    BLOCK_SIZE = 65536
-    file_hash = hashlib.sha256()
-    with open(file, 'rb') as f:
-        fb = f.read(BLOCK_SIZE)
-        while len(fb) > 0:
-            file_hash.update(fb)
-            fb = f.read(BLOCK_SIZE)
-    return file_hash.hexdigest()
 
 if __name__ == "__main__":
     print("Hello")
+    integrity_algorithm = "FILESIZE"
+    if len(sys.argv) > 3:
+        if sys.argv[4] == "MD5":
+            integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_MD5
+        if sys.argv[4] == "FILESIZE":
+            integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_FILESIZE
+        if sys.argv[4] == "MODIFICATIONDATE":
+            integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_MODIFICATION_DATE
+        if sys.argv[4] == "NONE":
+            integrity_algorithm = lambda: True
 
-    if len(sys.argv) == 4:
-        if sys.argv[3] == "DEBUG":
+    if len(sys.argv) > 4:
+        if sys.argv[4] == "DEBUG":
             logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-        if sys.argv[3] == "INFO":
+        if sys.argv[4] == "INFO":
             logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-        if sys.argv[3] == "WARNING":
+        if sys.argv[4] == "WARNING":
             logging.basicConfig(stream=sys.stderr, level=logging.WARN)
 
     print("Source: " + sys.argv[1])
     print("Destination: " + sys.argv[2])
-    walk(sys.argv[1], sys.argv[1], sys.argv[2])
+    walk(sys.argv[1], sys.argv[1], sys.argv[2], integrity_algorithm)
