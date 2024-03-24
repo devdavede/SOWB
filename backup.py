@@ -56,6 +56,8 @@ if __name__ == "__main__":
             integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_FILESIZE
         if sys.argv[4] == "MODIFICATIONDATE":
             integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_MODIFICATION_DATE
+        if sys.argv[4] == "FILENAME":
+            integrity_algorithm = integrity_checks.INTEGRITY_ALGORITHM_FILENAME
         if sys.argv[4] == "NONE":
             integrity_algorithm = lambda: True
 
