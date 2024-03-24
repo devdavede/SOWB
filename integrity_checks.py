@@ -1,6 +1,10 @@
-### INTEGRITÄTSALGORITHMEN ###
-
 # !/usr/bin/python
+
+### INTEGRITÄTSALGORITHMEN ###
+# Return TRUE if Files match
+# Return FALSE if Files do not match
+##############################
+
 import os
 import os.path
 import hashlib
@@ -25,3 +29,6 @@ def INTEGRITY_ALGORITHM_FILESIZE(src, target):
 
 def INTEGRITY_ALGORITHM_MODIFICATION_DATE(src, target):
     return os.path.getmtime(src) == os.path.getmtime(target)
+
+def INTEGRITY_ALGORITHM_FILENAME(src, target):
+    return os.path.basename(src) == os.path.basename(target)
